@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дары Гекаты</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/@max-bridge/sdk@latest/dist/index.umd.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🌙</span>
+                <h1>Дары Гекаты</h1>
+            </div>
+        </header>
+
+        <nav class="categories">
+            <button class="category-btn active" data-category="all">Все товары</button>
+            <button class="category-btn" data-category="candles">Свечи</button>
+            <button class="category-btn" data-category="herbs">Травы</button>
+            <button class="category-btn" data-category="amulets">Амулеты</button>
+        </nav>
+
+        <main class="products-grid" id="productsGrid"></main>
+
+        <div class="cart-float" id="cartFloat">
+            <span class="cart-icon">🛒</span>
+            <span class="cart-count" id="cartCount">0</span>
+        </div>
+
+        <div class="cart-modal" id="cartModal">
+            <div class="cart-header">
+                <h2>Корзина</h2>
+                <button class="close-btn" id="closeCart">×</button>
+            </div>
+            <div class="cart-items" id="cartItems"></div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <span>Итого:</span>
+                    <span id="cartTotal">0 ₽</span>
+                </div>
+                <button class="checkout-btn" id="checkoutBtn">Оформить заказ</button>
+            </div>
+        </div>
+
+        <div class="product-modal" id="productModal">
+            <div class="product-modal-content">
+                <button class="close-btn" id="closeProduct">×</button>
+                <div class="product-image" id="productImage"></div>
+                <h2 id="productName"></h2>
+                <p class="product-description" id="productDescription"></p>
+                <div class="product-price" id="productPrice"></div>
+                <button class="add-to-cart-btn" id="addToCartBtn">Добавить в корзину</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
