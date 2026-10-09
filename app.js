@@ -2,9 +2,6 @@ const SUPABASE_URL = 'https://toydvkvhtrjwhhjuabos.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRveWR2a3ZodHJqd2hoanVhYm9zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE1MzQ1NjIsImV4cCI6MjEwNzExMDU2Mn0.P3q6kEjSvvgpVYaCFEuloyj_MIOufmSS0NCUyHz5_0E';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// ⚠️ ЗАМЕНИТЕ на username вашего бота/аккаунта поддержки в MAX (без @)
-const SUPPORT_BOT_USERNAME = 'hecate_support_bot';
-
 const products = [
     { 
         id: 1, 
@@ -44,7 +41,7 @@ function renderProducts() {
         <div class="product-card" data-id="${p.id}">
             <div class="product-image">
                 <img src="${p.image}" alt="${p.name}" class="card-img" 
-                     onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'color:#ff6b6b;text-align:center;padding:20px;font-weight:bold;\\'>️ Нет фото:<br>${p.image}</div>'">
+                     onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'color:#ff6b6b;text-align:center;padding:20px;font-weight:bold;\\'>⚠️ Нет фото:<br>${p.image}</div>'">
             </div>
             <div class="product-info">
                 <h3 class="product-name">${p.name}</h3>
@@ -88,14 +85,14 @@ function openProductModal(id) {
     document.getElementById('productModal').classList.add('active');
 }
 
-// Главная функция — переход в чат поддержки с готовым сообщением
+// Главная функция — переход в чат с готовым сообщением
 function orderProduct() {
     if (!currentProduct) return;
     
     // Формируем текст сообщения
     const message = `Здравствуйте! Хочу заказать: ${currentProduct.name} (${currentProduct.price.toLocaleString('ru-RU')} ₽)`;
     
-    // Сохраняем заказ в Supabase (для вашей статистики)
+    // 1. Сохраняем заявку в Supabase (для вашей статистики)
     sb.from('orders').insert({
         user_id: window.WebApp?.initDataUnsafe?.user?.id || null,
         user_name: window.WebApp?.initDataUnsafe?.user?.first_name || 'Гость',
@@ -106,15 +103,16 @@ function orderProduct() {
         if (error) console.error('Не удалось сохранить заявку:', error);
     });
     
-    // Открываем чат с поддержкой в MAX через диплинк
-    // Формат: https://max.ru/:share?text=... — открывает окно выбора чата
-    const shareUrl = `https://max.ru/:share?text=${encodeURIComponent(message)}`;
+    // 2. Открываем ваш личный чат в MAX с уже вписанным текстом
+    // (Я очистил ссылку от vk.ru/away, оставив чистый MAX-адрес для мгновенного открытия)
+    const directLink = `https://max.ru/u/f9LHodD0cOJiy6bwhmhT6m3z_BX4WkY_zuRrJipuoLdQ3j_nYN-G9lmEIDs?text=${encodeURIComponent(message)}`;
     
     if (window.WebApp && window.WebApp.openLink) {
-        window.WebApp.openLink(shareUrl);
+        window.WebApp.openLink(directLink);
     } else {
-        window.open(shareUrl, '_blank');
+        window.open(directLink, '_blank');
     }
     
+    // Закрываем модальное окно товара
     document.getElementById('productModal').classList.remove('active');
 }
