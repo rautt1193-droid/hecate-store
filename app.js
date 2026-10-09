@@ -9,7 +9,7 @@ const products = [
         category: "oils", 
         price: 3333, 
         short_desc: "Алхимический ключ к потокам изобилия.",
-        full_desc: "«Золотая Жила» — это настоящий алхимический ключ к потокам изобилия и удачи. Объем: 10 мл.",
+        full_desc: "«Золотая Жила» — это настоящий алхимический ключ к потокам изобилия и удачи.",
         image: "images/oil1.jpg"
     },
     { 
@@ -18,37 +18,37 @@ const products = [
         category: "ritual_candles", 
         price: 3777, 
         short_desc: "Свеча-обряд для изобилия и процветания.", 
-        full_desc: "Свеча-обряд для изобилия, процветания и финансовой удачи. Время горения: 4 часа.", 
+        full_desc: "Свеча-обряд для изобилия, процветания и финансовой удачи.", 
         image: "images/candle1.jpg" 
     }
 ];
 
 let cart = [];
 let currentProduct = null;
-let currentCategory = 'oils'; // По умолчанию открываем масла
+let currentCategory = 'all'; // Совпадает с кнопкой "Все изделия" в вашем HTML
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("Страница загружена, всего товаров в коде:", products.length);
     renderProducts();
     setupEventListeners();
     updateCart();
 });
 
 function renderProducts() {
-    // ДИАГНОСТИКА: покажем сообщение, чтобы понять, работает ли код
-    const filtered = currentCategory === 'all' ? products : products.filter(p => p.category === currentCategory);
-    alert("Код работает! Текущая категория: " + currentCategory + "\nНайдено товаров: " + filtered.length);
-
     const grid = document.getElementById('productsGrid');
     if (!grid) {
-        alert("ОШИБКА: Не найден элемент productsGrid в HTML!");
+        console.error("Элемент productsGrid не найден в HTML!");
         return;
     }
-    
+
+    const filtered = currentCategory === 'all' ? products : products.filter(p => p.category === currentCategory);
+    console.log("Отрисовываем товаров для категории", currentCategory, ":", filtered.length);
+
     grid.innerHTML = filtered.map(p => `
         <div class="product-card" data-id="${p.id}">
             <div class="product-image">
-                <img src="${p.image}" alt="${p.name}" class="card-img"
-                     onerror="this.parentElement.innerHTML='<div style=\\'color:red;text-align:center;padding:20px;\\'>⚠️ Нет фото</div>'">
+                <img src="${p.image}" alt="${p.name}" class="card-img" 
+                     onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'color:#ff6b6b;text-align:center;padding:20px;font-weight:bold;\\'>⚠️ Нет фото:<br>${p.image}</div>'">
             </div>
             <div class="product-info">
                 <h3 class="product-name">${p.name}</h3>
@@ -89,6 +89,8 @@ function setupEventListeners() {
 
 function openProductModal(id) {
     currentProduct = products.find(p => p.id === id);
+    if (!currentProduct) return;
+    
     document.getElementById('productImage').innerHTML = `<img src="${currentProduct.image}" alt="${currentProduct.name}" class="modal-img" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>📦</text></svg>'">`;
     document.getElementById('productName').textContent = currentProduct.name;
     document.getElementById('productDescription').textContent = currentProduct.full_desc; 
@@ -97,9 +99,13 @@ function openProductModal(id) {
 }
 
 function addToCart() {
+    if (!currentProduct) return;
     const existing = cart.find(i => i.id === currentProduct.id);
-    if (existing) existing.quantity++;
-    else cart.push({ ...currentProduct, quantity: 1 });
+    if (existing) {
+        existing.quantity++;
+    } else {
+        cart.push({ ...currentProduct, quantity: 1 });
+    }
     updateCart();
     document.getElementById('productModal').classList.remove('active');
 }
@@ -107,6 +113,7 @@ function addToCart() {
 function updateCart() {
     const count = cart.reduce((s, i) => s + i.quantity, 0);
     document.getElementById('cartCount').textContent = count;
+    
     document.getElementById('cartItems').innerHTML = cart.map(i => `
         <div class="cart-item">
             <div>
@@ -115,12 +122,42 @@ function updateCart() {
             </div>
         </div>
     `).join('');
+    
     const total = cart.reduce((s, i) => s + i.price * i.quantity, 0);
     document.getElementById('cartTotal').textContent = `${total.toLocaleString('ru-RU')} ₽`;
 }
 
 async function checkout() {
     if (cart.length === 0) { alert('Корзина пуста!'); return; }
+    
     const total = cart.reduce((s, i) => s + i.price * i.quantity, 0);
     const btn = document.getElementById('checkoutBtn');
+    const originalText = btn.textContent;
+    
     btn.textContent = 'Оформляем...';
+    btn.disabled = true;
+
+    try {
+        const { error } = await supabase.from('orders').insert({
+            user_id: window.WebApp?.initDataUnsafe?.user?.id || null,
+            user_name: window.WebApp?.initDataUnsafe?.user?.first_name || 'Гость',
+            total_amount: total,
+            items: cart,
+            status: 'Новый'
+        });
+        
+        if (error) throw error;
+        
+        alert(`✨ Благодарим! Ваш заказ на сумму ${total.toLocaleString('ru-RU')} ₽ принят.`);
+        cart = [];
+        updateCart();
+        document.getElementById('cartModal').classList.remove('active');
+        
+    } catch (e) {
+        console.error('Ошибка заказа:', e);
+        alert('Произошла ошибка при отправке заказа.');
+    } finally {
+        btn.textContent = originalText;
+        btn.disabled = false;
+    }
+}
