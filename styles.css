@@ -123,3 +123,131 @@ body {
 @media (min-width: 768px) {
     .products-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; }
 }
+.product-card { 
+    background: var(--card-bg); 
+    border: 1px solid var(--border-color); 
+    border-radius: 12px; 
+    overflow: hidden; 
+    cursor: pointer; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+.product-card:hover { 
+    transform: translateY(-4px); 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); 
+    border-color: var(--accent-gold);
+}
+.product-image { 
+    width: 100%; 
+    height: 200px;
+    background: #15221B; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    overflow: hidden;
+}
+.card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+.product-card:hover .card-img { transform: scale(1.05); }
+
+.product-info { padding: 16px; }
+.product-name { 
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem; 
+    color: var(--accent-gold); 
+    margin-bottom: 8px; 
+    font-weight: 600; 
+}
+.product-description { 
+    font-size: 0.9rem; 
+    color: var(--text-muted); 
+    margin-bottom: 12px; 
+    display: -webkit-box; 
+    -webkit-line-clamp: 3; 
+    -webkit-box-orient: vertical; 
+    overflow: hidden; 
+}
+.product-price { 
+    font-size: 1.3rem; 
+    color: var(--text-main); 
+    font-weight: bold; 
+    font-family: 'Cinzel', serif;
+}
+
+/* Modals */
+.product-modal { 
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    background: rgba(0, 0, 0, 0.85); 
+    z-index: 1000; align-items: flex-end; justify-content: center; 
+}
+@media (min-width: 768px) { .product-modal { align-items: center; } }
+.product-modal.active { display: flex; }
+
+.product-modal-content { 
+    background: var(--card-bg); 
+    border-radius: 16px 16px 0 0; 
+    width: 100%; max-width: 500px; 
+    max-height: 85vh;
+    display: flex; flex-direction: column;
+    border: 1px solid var(--border-color);
+    border-bottom: none;
+    padding: 24px;
+    position: relative;
+    overflow-y: auto;
+}
+@media (min-width: 768px) {
+    .product-modal-content { border-radius: 16px; border-bottom: 1px solid var(--border-color); }
+}
+
+.product-modal-content .product-image { height: 200px; border-radius: 8px; margin-bottom: 20px; overflow: hidden; }
+.modal-img { width: 100%; height: 100%; object-fit: contain; }
+
+.product-modal-content h2 { 
+    font-family: 'Cinzel', serif;
+    color: var(--accent-gold); 
+    font-size: 1.5rem; 
+    margin-bottom: 12px; 
+    font-weight: 600; 
+}
+.product-modal-content .product-description { 
+    color: var(--text-main); 
+    font-size: 1.05rem; 
+    line-height: 1.6; 
+    margin-bottom: 20px; 
+    display: block; 
+    -webkit-line-clamp: unset; 
+}
+.product-modal-content .product-price { 
+    font-size: 1.6rem; 
+    margin-bottom: 24px; 
+    font-family: 'Cinzel', serif;
+}
+
+/* КНОПКА ЗАКАЗА */
+.order-btn { 
+    width: 100%; 
+    padding: 16px; 
+    background: var(--accent-gold); 
+    border: none; 
+    border-radius: 8px; 
+    color: #15221B; 
+    font-size: 1.1rem; 
+    font-weight: bold; 
+    cursor: pointer; 
+    transition: background 0.3s, transform 0.1s; 
+    font-family: 'Cormorant Garamond', serif;
+    margin-top: 10px;
+}
+.order-btn:hover { background: var(--accent-gold-hover); }
+.order-btn:active { transform: scale(0.98); }
+
+.close-btn { 
+    position: absolute; top: 16px; right: 16px; 
+    background: none; border: none; 
+    color: var(--text-muted); font-size: 2rem; 
+    cursor: pointer; line-height: 1; z-index: 10;
+}
+.close-btn:hover { color: var(--accent-gold); }
