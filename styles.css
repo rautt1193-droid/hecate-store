@@ -1,0 +1,38 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Georgia', serif; background: linear-gradient(135deg, #1a0033 0%, #2d0052 50%, #0f001a 100%); color: #e0d4f7; min-height: 100vh; }
+.app-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+.header { display: flex; justify-content: center; align-items: center; padding: 20px; background: rgba(45, 0, 82, 0.8); border-radius: 15px; margin-bottom: 20px; border: 1px solid #6b3fa0; }
+.logo { display: flex; align-items: center; gap: 15px; }
+.logo-icon { font-size: 2.5rem; }
+.logo h1 { font-size: 2rem; color: #d4af37; }
+.categories { display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; justify-content: center; }
+.category-btn { padding: 12px 24px; background: rgba(107, 63, 160, 0.3); border: 2px solid #6b3fa0; border-radius: 25px; color: #e0d4f7; cursor: pointer; transition: all 0.3s ease; }
+.category-btn:hover { background: rgba(107, 63, 160, 0.6); }
+.category-btn.active { background: #6b3fa0; border-color: #d4af37; }
+.products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; margin-bottom: 80px; }
+.product-card { background: rgba(45, 0, 82, 0.6); border: 1px solid #6b3fa0; border-radius: 15px; overflow: hidden; cursor: pointer; transition: all 0.3s ease; }
+.product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(107, 63, 160, 0.5); border-color: #d4af37; }
+.product-image { width: 100%; height: 200px; background: linear-gradient(135deg, #2d0052, #1a0033); display: flex; align-items: center; justify-content: center; font-size: 4rem; }
+.product-info { padding: 20px; }
+.product-name { font-size: 1.3rem; color: #d4af37; margin-bottom: 10px; }
+.product-description { font-size: 0.9rem; color: #b388ff; margin-bottom: 15px; }
+.product-price { font-size: 1.5rem; color: #fff; font-weight: bold; }
+.cart-float { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: #6b3fa0; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 20px rgba(107, 63, 160, 0.6); z-index: 100; }
+.cart-icon { font-size: 1.8rem; }
+.cart-count { position: absolute; top: -5px; right: -5px; background: #d4af37; color: #1a0033; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: bold; }
+.cart-modal, .product-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 1000; align-items: center; justify-content: center; }
+.cart-modal.active, .product-modal.active { display: flex; }
+.cart-header { background: #2d0052; padding: 20px; border-radius: 15px 15px 0 0; display: flex; justify-content: space-between; align-items: center; }
+.cart-header h2 { color: #d4af37; }
+.cart-items { background: rgba(45, 0, 82, 0.95); padding: 20px; max-height: 400px; overflow-y: auto; width: 90%; max-width: 500px; }
+.cart-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #6b3fa0; }
+.cart-item-name { color: #d4af37; }
+.cart-item-price { color: #b388ff; font-size: 0.9rem; }
+.cart-footer { background: #2d0052; padding: 20px; border-radius: 15px; margin-top: 20px; }
+.cart-total { display: flex; justify-content: space-between; font-size: 1.5rem; color: #d4af37; margin-bottom: 20px; }
+.checkout-btn { width: 100%; padding: 15px; background: #d4af37; border: none; border-radius: 10px; color: #1a0033; font-size: 1.2rem; font-weight: bold; cursor: pointer; }
+.product-modal-content { background: rgba(45, 0, 82, 0.95); padding: 30px; border-radius: 15px; max-width: 500px; width: 90%; position: relative; border: 2px solid #6b3fa0; }
+.product-modal-content .product-image { height: 250px; margin-bottom: 20px; }
+.product-modal-content h2 { color: #d4af37; margin-bottom: 15px; }
+.add-to-cart-btn { width: 100%; padding: 15px; background: #6b3fa0; border: 2px solid #d4af37; border-radius: 10px; color: #fff; font-size: 1.1rem; cursor: pointer; }
+.close-btn { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #d4af37; font-size: 2rem; cursor: pointer; }
