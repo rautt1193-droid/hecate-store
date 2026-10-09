@@ -1,6 +1,8 @@
 const SUPABASE_URL = 'https://toydvkvhtrjwhhjuabos.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRveWR2a3ZodHJqd2hoanVhYm9zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE1MzQ1NjIsImV4cCI6MjEwNzExMDU2Mn0.P3q6kEjSvvgpVYaCFEuloyj_MIOufmSS0NCUyHz5_0E';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ВАЖНО: переименовали supabase → sb, чтобы не конфликтовать с библиотекой
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const products = [
     { 
@@ -9,7 +11,7 @@ const products = [
         category: "oils", 
         price: 3333, 
         short_desc: "Алхимический ключ к потокам изобилия.",
-        full_desc: "«Золотая Жила» — это настоящий алхимический ключ к потокам изобилия и удачи.",
+        full_desc: "«Золотая Жила» — это настоящий алхимический ключ к потокам изобилия и удачи. Объем: 10 мл.",
         image: "images/oil1.jpg"
     },
     { 
@@ -18,17 +20,16 @@ const products = [
         category: "ritual_candles", 
         price: 3777, 
         short_desc: "Свеча-обряд для изобилия и процветания.", 
-        full_desc: "Свеча-обряд для изобилия, процветания и финансовой удачи.", 
+        full_desc: "Свеча-обряд для изобилия, процветания и финансовой удачи. Время горения: 4 часа.", 
         image: "images/candle1.jpg" 
     }
 ];
 
 let cart = [];
 let currentProduct = null;
-let currentCategory = 'all'; // Совпадает с кнопкой "Все изделия" в вашем HTML
+let currentCategory = 'all';
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("Страница загружена, всего товаров в коде:", products.length);
     renderProducts();
     setupEventListeners();
     updateCart();
@@ -36,13 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function renderProducts() {
     const grid = document.getElementById('productsGrid');
-    if (!grid) {
-        console.error("Элемент productsGrid не найден в HTML!");
-        return;
-    }
+    if (!grid) return;
 
     const filtered = currentCategory === 'all' ? products : products.filter(p => p.category === currentCategory);
-    console.log("Отрисовываем товаров для категории", currentCategory, ":", filtered.length);
 
     grid.innerHTML = filtered.map(p => `
         <div class="product-card" data-id="${p.id}">
@@ -138,7 +135,8 @@ async function checkout() {
     btn.disabled = true;
 
     try {
-        const { error } = await supabase.from('orders').insert({
+        // ВАЖНО: здесь тоже заменили supabase → sb
+        const { error } = await sb.from('orders').insert({
             user_id: window.WebApp?.initDataUnsafe?.user?.id || null,
             user_name: window.WebApp?.initDataUnsafe?.user?.first_name || 'Гость',
             total_amount: total,
