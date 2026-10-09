@@ -130,12 +130,32 @@ body {
 }
 .product-image { 
     width: 100%; 
-    height: 160px; 
-    background: linear-gradient(135deg, #254031, #15221B); 
+    height: 200px; /* Чуть увеличил высоту для фото */
+    background: #15221B; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
-    font-size: 3.5rem; 
+    overflow: hidden; /* Обрезает всё, что вылезает за рамки */
+}
+
+/* Стили для картинки в карточке товара */
+.card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Картинка заполняет блок, не искажаясь */
+    transition: transform 0.3s ease;
+}
+.product-card:hover .card-img {
+    transform: scale(1.05); /* Легкое увеличение при наведении */
+}
+
+/* Стили для картинки в модальном окне (большое фото) */
+.modal-img {
+    width: 100%;
+    height: 250px;
+    object-fit: contain; /* Показывает фото целиком */
+    border-radius: 8px;
+    margin-bottom: 20px;
 }
 .product-info { padding: 16px; }
 .product-name { 
