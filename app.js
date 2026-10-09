@@ -1,5 +1,5 @@
-const SUPABASE_URL = 'ВСТАВЬТЕ_СЮДА_ВАШ_SUPABASE_URL';
-const SUPABASE_ANON_KEY = 'ВСТАВЬТЕ_СЮДА_ВАШ_SUPABASE_KEY';
+const SUPABASE_URL = 'https://toydvkvhtrjwhhjuabos.supabase.co/rest/v1/';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRveWR2a3ZodHJqd2hoanVhYm9zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE1MzQ1NjIsImV4cCI6MjEwNzExMDU2Mn0.P3q6kEjSvvgpVYaCFEuloyj_MIOufmSS0NCUyHz5_0E';
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const products = [
