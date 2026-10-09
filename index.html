@@ -4,6 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Дары Гекаты | Мастерская Магии</title>
+    
+    <!-- Подключение шрифтов -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Если у вас есть файлы шрифтов CocoBiker и AnastasiaScript, раскомментируйте: -->
+    <!--
+    <style>
+    @font-face {
+        font-family: 'CocoBiker';
+        src: url('fonts/CocoBiker.woff2') format('woff2'),
+             url('fonts/CocoBiker.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: 'AnastasiaScript';
+        src: url('fonts/AnastasiaScript.woff2') format('woff2'),
+             url('fonts/AnastasiaScript.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+    </style>
+    -->
+    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://unpkg.com/@max-bridge/sdk@latest/dist/index.umd.js"></script>
     <link rel="stylesheet" href="styles.css">
@@ -12,10 +38,10 @@
     <div class="app-container">
         <header class="header">
             <div class="logo">
-                <span class="logo-icon">🌿</span>
-                <div>
-                    <h1>Дары Гекаты</h1>
-                    <p class="subtitle">Мастерская Магии</p>
+                <img src="logo.png" alt="Дары Гекаты" class="logo-image">
+                <div class="logo-text">
+                    <h1 class="title-main">Дары Гекаты</h1>
+                    <p class="title-sub">Мастерская магии</p>
                 </div>
             </div>
         </header>
