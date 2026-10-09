@@ -63,6 +63,8 @@ body {
     font-style: italic;
     font-weight: 400;
     letter-spacing: 1px;
+    margin-top: 0;      /* ← добавьте эту строку */
+    line-height: 1;     /* ← и эту, чтобы строка была плотнее */
 }
 
 /* Categories Navigation */
