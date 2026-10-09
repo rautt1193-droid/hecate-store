@@ -12,7 +12,7 @@ const products = [
         price: 3333, 
         short_desc: "Алхимический ключ к потокам изобилия.", // Короткое описание для карточки
         full_desc: "«Золотая Жила» — это настоящий алхимический ключ к потокам изобилия и удачи. Оно пробуждает денежную энергию, усиливает харизму и открывает скрытые возможности, помогая соединиться с вибрациями процветания и успеха. Объем: 10 мл.", // Полное описание при клике
-        image: "images/oil1.jpg" // Имя вашего файла в папке images
+        image: "images/1.jpg" // Имя вашего файла в папке images
     },
     { 
         id: 2, 
@@ -42,10 +42,12 @@ function renderProducts() {
     
     grid.innerHTML = filtered.map(p => `
         <div class="product-card" data-id="${p.id}">
-            <div class="product-image">${p.emoji}</div>
+            <div class="product-image">
+                <img src="${p.image}" alt="${p.name}" class="card-img">
+            </div>
             <div class="product-info">
                 <h3 class="product-name">${p.name}</h3>
-                <p class="product-description">${p.description}</p>
+                <p class="product-description">${p.short_desc}</p>
                 <div class="product-price">${p.price.toLocaleString('ru-RU')} ₽</div>
             </div>
         </div>
@@ -83,13 +85,16 @@ function setupEventListeners() {
 
 function openProductModal(id) {
     currentProduct = products.find(p => p.id === id);
-    document.getElementById('productImage').textContent = currentProduct.emoji;
+    
+    // Вставляем картинку в модальное окно
+    document.getElementById('productImage').innerHTML = `<img src="${currentProduct.image}" alt="${currentProduct.name}" class="modal-img">`;
+    
     document.getElementById('productName').textContent = currentProduct.name;
-    document.getElementById('productDescription').textContent = currentProduct.description;
+    // Используем полное описание для модального окна
+    document.getElementById('productDescription').textContent = currentProduct.full_desc; 
     document.getElementById('productPrice').textContent = `${currentProduct.price.toLocaleString('ru-RU')} ₽`;
     document.getElementById('productModal').classList.add('active');
 }
-
 function addToCart() {
     const existing = cart.find(i => i.id === currentProduct.id);
     if (existing) {
