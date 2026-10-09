@@ -1,18 +1,16 @@
 const SUPABASE_URL = 'https://toydvkvhtrjwhhjuabos.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRveWR2a3ZodHJqd2hoanVhYm9zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE1MzQ1NjIsImV4cCI6MjEwNzExMDU2Mn0.P3q6kEjSvvgpVYaCFEuloyj_MIOufmSS0NCUyHz5_0E';
-// ВСТАВЬТЕ СЮДА ВАШИ ДАННЫЕ ИЗ SUPABASE (Шаг 2.3 инструкции)
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Товары по 7 разделам
 const products = [
     { 
         id: 1, 
         name: "Золотая Жила", 
         category: "oils", 
         price: 3333, 
-        short_desc: "Алхимический ключ к потокам изобилия.", // Короткое описание для карточки
-        full_desc: "«Золотая Жила» — это настоящий алхимический ключ к потокам изобилия и удачи. Оно пробуждает денежную энергию, усиливает харизму и открывает скрытые возможности, помогая соединиться с вибрациями процветания и успеха. Объем: 10 мл.", // Полное описание при клике
-        image: "images/oil1.jpg" // Имя вашего файла в папке images
+        short_desc: "Алхимический ключ к потокам изобилия.",
+        full_desc: "«Золотая Жила» — это настоящий алхимический ключ к потокам изобилия и удачи. Оно пробуждает денежную энергию, усиливает харизму и открывает скрытые возможности, помогая соединиться с вибрациями процветания и успеха. Объем: 10 мл.",
+        image: "images/oil1.jpg"
     },
     { 
         id: 2, 
@@ -22,13 +20,12 @@ const products = [
         short_desc: "Свеча-обряд для изобилия и процветания.", 
         full_desc: "Свеча-обряд для изобилия, процветания и финансовой удачи. Берегиня-Денежная открывает денежные потоки, привлекает новые возможности, прибыльных партнёров и стабильный доход. Время горения: 4 часа.", 
         image: "images/candle1.jpg" 
-    },
-    // Скопируйте блок выше, чтобы добавить новый товар, и поменяйте id, name, category, price и image
+    }
 ];
 
 let cart = [];
 let currentProduct = null;
-let currentCategory = 'all';
+let currentCategory = 'oils';  // ← ИСПРАВЛЕНО: было 'all', теперь 'oils'
 
 document.addEventListener('DOMContentLoaded', () => {
     renderProducts();
@@ -43,7 +40,8 @@ function renderProducts() {
     grid.innerHTML = filtered.map(p => `
         <div class="product-card" data-id="${p.id}">
             <div class="product-image">
-                <img src="${p.image}" alt="${p.name}" class="card-img">
+                <img src="${p.image}" alt="${p.name}" class="card-img"
+                     onerror="this.parentElement.innerHTML='<div style=\\'color:red;text-align:center;padding:20px;\\'>⚠️ Нет фото</div>'">
             </div>
             <div class="product-info">
                 <h3 class="product-name">${p.name}</h3>
@@ -74,7 +72,6 @@ function setupEventListeners() {
     document.getElementById('addToCartBtn').addEventListener('click', addToCart);
     document.getElementById('checkoutBtn').addEventListener('click', checkout);
     
-    // Закрытие по клику вне модального окна
     document.getElementById('cartModal').addEventListener('click', (e) => {
         if (e.target.id === 'cartModal') document.getElementById('cartModal').classList.remove('active');
     });
@@ -86,15 +83,15 @@ function setupEventListeners() {
 function openProductModal(id) {
     currentProduct = products.find(p => p.id === id);
     
-    // Вставляем картинку в модальное окно
-    document.getElementById('productImage').innerHTML = `<img src="${currentProduct.image}" alt="${currentProduct.name}" class="modal-img">`;
+    document.getElementById('productImage').innerHTML = `<img src="${currentProduct.image}" alt="${currentProduct.name}" class="modal-img"
+        onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>📦</text></svg>'">`;
     
     document.getElementById('productName').textContent = currentProduct.name;
-    // Используем полное описание для модального окна
     document.getElementById('productDescription').textContent = currentProduct.full_desc; 
     document.getElementById('productPrice').textContent = `${currentProduct.price.toLocaleString('ru-RU')} ₽`;
     document.getElementById('productModal').classList.add('active');
 }
+
 function addToCart() {
     const existing = cart.find(i => i.id === currentProduct.id);
     if (existing) {
