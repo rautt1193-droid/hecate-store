@@ -2,8 +2,8 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Дары Гекаты</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Дары Гекаты | Мастерская Магии</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://unpkg.com/@max-bridge/sdk@latest/dist/index.umd.js"></script>
     <link rel="stylesheet" href="styles.css">
@@ -12,16 +12,23 @@
     <div class="app-container">
         <header class="header">
             <div class="logo">
-                <span class="logo-icon">🌙</span>
-                <h1>Дары Гекаты</h1>
+                <span class="logo-icon">🌿</span>
+                <div>
+                    <h1>Дары Гекаты</h1>
+                    <p class="subtitle">Мастерская Магии</p>
+                </div>
             </div>
         </header>
 
-        <nav class="categories">
-            <button class="category-btn active" data-category="all">Все товары</button>
-            <button class="category-btn" data-category="candles">Свечи</button>
-            <button class="category-btn" data-category="herbs">Травы</button>
-            <button class="category-btn" data-category="amulets">Амулеты</button>
+        <nav class="categories" id="categoriesNav">
+            <button class="category-btn active" data-category="all">Все изделия</button>
+            <button class="category-btn" data-category="oils">Магические масла</button>
+            <button class="category-btn" data-category="ritual_candles">Обрядовые свечи</button>
+            <button class="category-btn" data-category="program_candles">Программные свечи</button>
+            <button class="category-btn" data-category="witch_bath">Ведьмина ванна</button>
+            <button class="category-btn" data-category="amulets">Обереги и амулеты</button>
+            <button class="category-btn" data-category="limited">Ограниченные коллекции</button>
+            <button class="category-btn" data-category="altars">Алтари, шкатулки, монетницы</button>
         </nav>
 
         <main class="products-grid" id="productsGrid"></main>
@@ -32,17 +39,19 @@
         </div>
 
         <div class="cart-modal" id="cartModal">
-            <div class="cart-header">
-                <h2>Корзина</h2>
-                <button class="close-btn" id="closeCart">×</button>
-            </div>
-            <div class="cart-items" id="cartItems"></div>
-            <div class="cart-footer">
-                <div class="cart-total">
-                    <span>Итого:</span>
-                    <span id="cartTotal">0 ₽</span>
+            <div class="cart-content">
+                <div class="cart-header">
+                    <h2>Ваш заказ</h2>
+                    <button class="close-btn" id="closeCart">×</button>
                 </div>
-                <button class="checkout-btn" id="checkoutBtn">Оформить заказ</button>
+                <div class="cart-items" id="cartItems"></div>
+                <div class="cart-footer">
+                    <div class="cart-total">
+                        <span>Итого:</span>
+                        <span id="cartTotal">0 ₽</span>
+                    </div>
+                    <button class="checkout-btn" id="checkoutBtn">Оформить заказ</button>
+                </div>
             </div>
         </div>
 
