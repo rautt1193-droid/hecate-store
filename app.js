@@ -1,8 +1,9 @@
 const SUPABASE_URL = 'https://toydvkvhtrjwhhjuabos.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRveWR2a3ZodHJqd2hoanVhYm9zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE1MzQ1NjIsImV4cCI6MjEwNzExMDU2Mn0.P3q6kEjSvvgpVYaCFEuloyj_MIOufmSS0NCUyHz5_0E';
-
-// ВАЖНО: переименовали supabase → sb, чтобы не конфликтовать с библиотекой
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ⚠️ ЗАМЕНИТЕ на username вашего бота/аккаунта поддержки в MAX (без @)
+const SUPPORT_BOT_USERNAME = 'hecate_support_bot';
 
 const products = [
     { 
@@ -25,14 +26,12 @@ const products = [
     }
 ];
 
-let cart = [];
 let currentProduct = null;
 let currentCategory = 'all';
 
 document.addEventListener('DOMContentLoaded', () => {
     renderProducts();
     setupEventListeners();
-    updateCart();
 });
 
 function renderProducts() {
@@ -45,7 +44,7 @@ function renderProducts() {
         <div class="product-card" data-id="${p.id}">
             <div class="product-image">
                 <img src="${p.image}" alt="${p.name}" class="card-img" 
-                     onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'color:#ff6b6b;text-align:center;padding:20px;font-weight:bold;\\'>⚠️ Нет фото:<br>${p.image}</div>'">
+                     onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'color:#ff6b6b;text-align:center;padding:20px;font-weight:bold;\\'>️ Нет фото:<br>${p.image}</div>'">
             </div>
             <div class="product-info">
                 <h3 class="product-name">${p.name}</h3>
@@ -70,15 +69,9 @@ function setupEventListeners() {
         });
     });
     
-    document.getElementById('cartFloat').addEventListener('click', () => document.getElementById('cartModal').classList.add('active'));
-    document.getElementById('closeCart').addEventListener('click', () => document.getElementById('cartModal').classList.remove('active'));
     document.getElementById('closeProduct').addEventListener('click', () => document.getElementById('productModal').classList.remove('active'));
-    document.getElementById('addToCartBtn').addEventListener('click', addToCart);
-    document.getElementById('checkoutBtn').addEventListener('click', checkout);
+    document.getElementById('orderBtn').addEventListener('click', orderProduct);
     
-    document.getElementById('cartModal').addEventListener('click', (e) => {
-        if (e.target.id === 'cartModal') document.getElementById('cartModal').classList.remove('active');
-    });
     document.getElementById('productModal').addEventListener('click', (e) => {
         if (e.target.id === 'productModal') document.getElementById('productModal').classList.remove('active');
     });
@@ -95,67 +88,33 @@ function openProductModal(id) {
     document.getElementById('productModal').classList.add('active');
 }
 
-function addToCart() {
+// Главная функция — переход в чат поддержки с готовым сообщением
+function orderProduct() {
     if (!currentProduct) return;
-    const existing = cart.find(i => i.id === currentProduct.id);
-    if (existing) {
-        existing.quantity++;
+    
+    // Формируем текст сообщения
+    const message = `Здравствуйте! Хочу заказать: ${currentProduct.name} (${currentProduct.price.toLocaleString('ru-RU')} ₽)`;
+    
+    // Сохраняем заказ в Supabase (для вашей статистики)
+    sb.from('orders').insert({
+        user_id: window.WebApp?.initDataUnsafe?.user?.id || null,
+        user_name: window.WebApp?.initDataUnsafe?.user?.first_name || 'Гость',
+        total_amount: currentProduct.price,
+        items: [{ name: currentProduct.name, price: currentProduct.price, quantity: 1 }],
+        status: 'Заявка через чат'
+    }).then(({ error }) => {
+        if (error) console.error('Не удалось сохранить заявку:', error);
+    });
+    
+    // Открываем чат с поддержкой в MAX через диплинк
+    // Формат: https://max.ru/:share?text=... — открывает окно выбора чата
+    const shareUrl = `https://max.ru/:share?text=${encodeURIComponent(message)}`;
+    
+    if (window.WebApp && window.WebApp.openLink) {
+        window.WebApp.openLink(shareUrl);
     } else {
-        cart.push({ ...currentProduct, quantity: 1 });
+        window.open(shareUrl, '_blank');
     }
-    updateCart();
+    
     document.getElementById('productModal').classList.remove('active');
-}
-
-function updateCart() {
-    const count = cart.reduce((s, i) => s + i.quantity, 0);
-    document.getElementById('cartCount').textContent = count;
-    
-    document.getElementById('cartItems').innerHTML = cart.map(i => `
-        <div class="cart-item">
-            <div>
-                <div class="cart-item-name">${i.name}</div>
-                <div class="cart-item-price">${i.price.toLocaleString('ru-RU')} ₽ × ${i.quantity}</div>
-            </div>
-        </div>
-    `).join('');
-    
-    const total = cart.reduce((s, i) => s + i.price * i.quantity, 0);
-    document.getElementById('cartTotal').textContent = `${total.toLocaleString('ru-RU')} ₽`;
-}
-
-async function checkout() {
-    if (cart.length === 0) { alert('Корзина пуста!'); return; }
-    
-    const total = cart.reduce((s, i) => s + i.price * i.quantity, 0);
-    const btn = document.getElementById('checkoutBtn');
-    const originalText = btn.textContent;
-    
-    btn.textContent = 'Оформляем...';
-    btn.disabled = true;
-
-    try {
-        // ВАЖНО: здесь тоже заменили supabase → sb
-        const { error } = await sb.from('orders').insert({
-            user_id: window.WebApp?.initDataUnsafe?.user?.id || null,
-            user_name: window.WebApp?.initDataUnsafe?.user?.first_name || 'Гость',
-            total_amount: total,
-            items: cart,
-            status: 'Новый'
-        });
-        
-        if (error) throw error;
-        
-        alert(`✨ Благодарим! Ваш заказ на сумму ${total.toLocaleString('ru-RU')} ₽ принят.`);
-        cart = [];
-        updateCart();
-        document.getElementById('cartModal').classList.remove('active');
-        
-    } catch (e) {
-        console.error('Ошибка заказа:', e);
-        alert('Произошла ошибка при отправке заказа.');
-    } finally {
-        btn.textContent = originalText;
-        btn.disabled = false;
-    }
 }
