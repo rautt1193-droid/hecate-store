@@ -1,4 +1,4 @@
-const SUPABASE_URL = 'https://toydvkvhtrjwhhjuabos.supabase.co/rest/v1/';
+const SUPABASE_URL = 'https://toydvkvhtrjwhhjuabos.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRveWR2a3ZodHJqd2hoanVhYm9zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE1MzQ1NjIsImV4cCI6MjEwNzExMDU2Mn0.P3q6kEjSvvgpVYaCFEuloyj_MIOufmSS0NCUyHz5_0E';
 // ВСТАВЬТЕ СЮДА ВАШИ ДАННЫЕ ИЗ SUPABASE (Шаг 2.3 инструкции)
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
