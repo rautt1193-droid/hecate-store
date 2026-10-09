@@ -9,7 +9,7 @@ const products = [
         category: "oils", 
         price: 3333, 
         short_desc: "Алхимический ключ к потокам изобилия.",
-        full_desc: "«Золотая Жила» — это настоящий алхимический ключ к потокам изобилия и удачи. Оно пробуждает денежную энергию, усиливает харизму и открывает скрытые возможности, помогая соединиться с вибрациями процветания и успеха. Объем: 10 мл.",
+        full_desc: "«Золотая Жила» — это настоящий алхимический ключ к потокам изобилия и удачи. Объем: 10 мл.",
         image: "images/oil1.jpg"
     },
     { 
@@ -18,14 +18,14 @@ const products = [
         category: "ritual_candles", 
         price: 3777, 
         short_desc: "Свеча-обряд для изобилия и процветания.", 
-        full_desc: "Свеча-обряд для изобилия, процветания и финансовой удачи. Берегиня-Денежная открывает денежные потоки, привлекает новые возможности, прибыльных партнёров и стабильный доход. Время горения: 4 часа.", 
+        full_desc: "Свеча-обряд для изобилия, процветания и финансовой удачи. Время горения: 4 часа.", 
         image: "images/candle1.jpg" 
     }
 ];
 
 let cart = [];
 let currentProduct = null;
-let currentCategory = 'oils';  // ← ИСПРАВЛЕНО: было 'all', теперь 'oils'
+let currentCategory = 'oils'; // По умолчанию открываем масла
 
 document.addEventListener('DOMContentLoaded', () => {
     renderProducts();
@@ -34,8 +34,15 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function renderProducts() {
-    const grid = document.getElementById('productsGrid');
+    // ДИАГНОСТИКА: покажем сообщение, чтобы понять, работает ли код
     const filtered = currentCategory === 'all' ? products : products.filter(p => p.category === currentCategory);
+    alert("Код работает! Текущая категория: " + currentCategory + "\nНайдено товаров: " + filtered.length);
+
+    const grid = document.getElementById('productsGrid');
+    if (!grid) {
+        alert("ОШИБКА: Не найден элемент productsGrid в HTML!");
+        return;
+    }
     
     grid.innerHTML = filtered.map(p => `
         <div class="product-card" data-id="${p.id}">
@@ -82,10 +89,7 @@ function setupEventListeners() {
 
 function openProductModal(id) {
     currentProduct = products.find(p => p.id === id);
-    
-    document.getElementById('productImage').innerHTML = `<img src="${currentProduct.image}" alt="${currentProduct.name}" class="modal-img"
-        onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>📦</text></svg>'">`;
-    
+    document.getElementById('productImage').innerHTML = `<img src="${currentProduct.image}" alt="${currentProduct.name}" class="modal-img" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>📦</text></svg>'">`;
     document.getElementById('productName').textContent = currentProduct.name;
     document.getElementById('productDescription').textContent = currentProduct.full_desc; 
     document.getElementById('productPrice').textContent = `${currentProduct.price.toLocaleString('ru-RU')} ₽`;
@@ -94,11 +98,8 @@ function openProductModal(id) {
 
 function addToCart() {
     const existing = cart.find(i => i.id === currentProduct.id);
-    if (existing) {
-        existing.quantity++;
-    } else {
-        cart.push({ ...currentProduct, quantity: 1 });
-    }
+    if (existing) existing.quantity++;
+    else cart.push({ ...currentProduct, quantity: 1 });
     updateCart();
     document.getElementById('productModal').classList.remove('active');
 }
@@ -106,7 +107,6 @@ function addToCart() {
 function updateCart() {
     const count = cart.reduce((s, i) => s + i.quantity, 0);
     document.getElementById('cartCount').textContent = count;
-    
     document.getElementById('cartItems').innerHTML = cart.map(i => `
         <div class="cart-item">
             <div>
@@ -115,42 +115,12 @@ function updateCart() {
             </div>
         </div>
     `).join('');
-    
     const total = cart.reduce((s, i) => s + i.price * i.quantity, 0);
     document.getElementById('cartTotal').textContent = `${total.toLocaleString('ru-RU')} ₽`;
 }
 
 async function checkout() {
     if (cart.length === 0) { alert('Корзина пуста!'); return; }
-    
     const total = cart.reduce((s, i) => s + i.price * i.quantity, 0);
     const btn = document.getElementById('checkoutBtn');
-    const originalText = btn.textContent;
-    
     btn.textContent = 'Оформляем...';
-    btn.disabled = true;
-
-    try {
-        const { error } = await supabase.from('orders').insert({
-            user_id: window.WebApp?.initDataUnsafe?.user?.id || null,
-            user_name: window.WebApp?.initDataUnsafe?.user?.first_name || 'Гость',
-            total_amount: total,
-            items: cart,
-            status: 'Новый'
-        });
-        
-        if (error) throw error;
-        
-        alert(`✨ Благодарим! Ваш заказ на сумму ${total.toLocaleString('ru-RU')} ₽ принят.\nМы свяжемся с вами для подтверждения.`);
-        cart = [];
-        updateCart();
-        document.getElementById('cartModal').classList.remove('active');
-        
-    } catch (e) {
-        console.error('Ошибка заказа:', e);
-        alert('Произошла ошибка при отправке заказа. Пожалуйста, попробуйте позже или напишите нам напрямую.');
-    } finally {
-        btn.textContent = originalText;
-        btn.disabled = false;
-    }
-}
