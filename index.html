@@ -4,29 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Дары Гекаты | Мастерская Магии</title>
-    
-    <!-- Подключение шрифтов -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-    
-    <style>
-    @font-face {
-        font-family: 'CocoBiker';
-        src: url('fonts/CocoBiker.woff2') format('woff2'),
-             url('fonts/CocoBiker.woff') format('woff');
-        font-weight: normal;
-        font-style: normal;
-    }
-    @font-face {
-        font-family: 'AnastasiaScript';
-        src: url('fonts/AnastasiaScript.woff2') format('woff2'),
-             url('fonts/AnastasiaScript.woff') format('woff');
-        font-weight: normal;
-        font-style: normal;
-    }
-    </style>
-    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://unpkg.com/@max-bridge/sdk@latest/dist/index.umd.js"></script>
     <link rel="stylesheet" href="styles.css">
@@ -36,10 +13,6 @@
         <header class="header">
             <div class="logo">
                 <img src="logo.png" alt="Дары Гекаты" class="logo-image">
-                <div class="logo-text">
-                    <h1 class="title-main">Дары Гекаты</h1>
-                    <p class="title-sub">Мастерская магии</p>
-                </div>
             </div>
         </header>
 
@@ -56,28 +29,7 @@
 
         <main class="products-grid" id="productsGrid"></main>
 
-        <div class="cart-float" id="cartFloat">
-            <span class="cart-icon">🛒</span>
-            <span class="cart-count" id="cartCount">0</span>
-        </div>
-
-        <div class="cart-modal" id="cartModal">
-            <div class="cart-content">
-                <div class="cart-header">
-                    <h2>Ваш заказ</h2>
-                    <button class="close-btn" id="closeCart">×</button>
-                </div>
-                <div class="cart-items" id="cartItems"></div>
-                <div class="cart-footer">
-                    <div class="cart-total">
-                        <span>Итого:</span>
-                        <span id="cartTotal">0 ₽</span>
-                    </div>
-                    <button class="checkout-btn" id="checkoutBtn">Оформить заказ</button>
-                </div>
-            </div>
-        </div>
-
+        <!-- Модальное окно товара -->
         <div class="product-modal" id="productModal">
             <div class="product-modal-content">
                 <button class="close-btn" id="closeProduct">×</button>
@@ -85,7 +37,8 @@
                 <h2 id="productName"></h2>
                 <p class="product-description" id="productDescription"></p>
                 <div class="product-price" id="productPrice"></div>
-                <button class="add-to-cart-btn" id="addToCartBtn">Добавить в корзину</button>
+                <!-- Кнопка заказа ведёт сразу в чат поддержки -->
+                <button class="order-btn" id="orderBtn">💬 Заказать у мастера</button>
             </div>
         </div>
     </div>
