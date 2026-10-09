@@ -13,7 +13,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body { 
-    font-family: 'Georgia', 'Times New Roman', serif; 
+    font-family: 'Cormorant Garamond', 'Georgia', serif; 
     background-color: var(--bg-color); 
     color: var(--text-main); 
     min-height: 100vh; 
@@ -22,7 +22,7 @@ body {
 
 .app-container { max-width: 1200px; margin: 0 auto; padding: 16px; }
 
-/* Header */
+/* Header с логотипом */
 .header { 
     text-align: center;
     padding: 24px 16px; 
@@ -31,10 +31,39 @@ body {
     margin-bottom: 20px; 
     border: 1px solid var(--border-color); 
 }
-.logo { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-.logo-icon { font-size: 2.5rem; }
-.logo h1 { font-size: 1.8rem; color: var(--accent-gold); letter-spacing: 1px; }
-.subtitle { font-size: 0.9rem; color: var(--text-muted); font-style: italic; }
+.logo { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 12px; 
+}
+.logo-image { 
+    width: 180px; 
+    height: 180px; 
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+.logo-text { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+
+/* Шрифт для "Дары Гекаты" - используем Cinzel как аналог CocoBiker */
+.title-main { 
+    font-family: 'Cinzel', 'CocoBiker', 'Georgia', serif; 
+    font-size: 2rem; 
+    color: var(--accent-gold); 
+    letter-spacing: 2px;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* Шрифт для "Мастерская магии" - используем Cormorant как аналог AnastasiaScript */
+.title-sub { 
+    font-family: 'Cormorant Garamond', 'AnastasiaScript', 'Georgia', serif; 
+    font-size: 1.1rem; 
+    color: var(--text-muted); 
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
 
 /* Categories Navigation */
 .categories { 
@@ -44,9 +73,9 @@ body {
     overflow-x: auto; 
     padding-bottom: 8px;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* Firefox */
+    scrollbar-width: none;
 }
-.categories::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+.categories::-webkit-scrollbar { display: none; }
 
 .category-btn { 
     padding: 10px 18px; 
@@ -58,7 +87,7 @@ body {
     transition: all 0.3s ease; 
     font-size: 0.9rem;
     white-space: nowrap;
-    font-family: inherit;
+    font-family: 'Cormorant Garamond', serif;
 }
 .category-btn:hover { background: var(--btn-hover); color: var(--text-main); }
 .category-btn.active { 
@@ -102,9 +131,28 @@ body {
     font-size: 3.5rem; 
 }
 .product-info { padding: 16px; }
-.product-name { font-size: 1.1rem; color: var(--accent-gold); margin-bottom: 8px; font-weight: normal; }
-.product-description { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-.product-price { font-size: 1.3rem; color: var(--text-main); font-weight: bold; }
+.product-name { 
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem; 
+    color: var(--accent-gold); 
+    margin-bottom: 8px; 
+    font-weight: 600; 
+}
+.product-description { 
+    font-size: 0.9rem; 
+    color: var(--text-muted); 
+    margin-bottom: 12px; 
+    display: -webkit-box; 
+    -webkit-line-clamp: 3; 
+    -webkit-box-orient: vertical; 
+    overflow: hidden; 
+}
+.product-price { 
+    font-size: 1.3rem; 
+    color: var(--text-main); 
+    font-weight: bold; 
+    font-family: 'Cinzel', serif;
+}
 
 /* Cart Float Button */
 .cart-float { 
@@ -158,7 +206,12 @@ body {
     display: flex; justify-content: space-between; align-items: center; 
     border-bottom: 1px solid var(--border-color);
 }
-.cart-header h2 { color: var(--accent-gold); font-size: 1.3rem; font-weight: normal; }
+.cart-header h2 { 
+    font-family: 'Cinzel', serif;
+    color: var(--accent-gold); 
+    font-size: 1.3rem; 
+    font-weight: 600; 
+}
 
 .cart-items { padding: 16px; overflow-y: auto; flex: 1; }
 .cart-item { 
@@ -166,11 +219,16 @@ body {
     padding: 12px 0; border-bottom: 1px solid var(--border-color); 
 }
 .cart-item:last-child { border-bottom: none; }
-.cart-item-name { color: var(--text-main); font-size: 1rem; margin-bottom: 4px; }
-.cart-item-price { color: var(--accent-gold); font-size: 0.9rem; }
+.cart-item-name { 
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--text-main); 
+    font-size: 1.05rem; 
+    margin-bottom: 4px; 
+}
+.cart-item-price { color: var(--accent-gold); font-size: 0.95rem; }
 
 .cart-footer { padding: 20px; border-top: 1px solid var(--border-color); background: rgba(0,0,0,0.2); }
-.cart-total { display: flex; justify-content: space-between; font-size: 1.4rem; color: var(--accent-gold); margin-bottom: 16px; }
+.cart-total { display: flex; justify-content: space-between; font-size: 1.4rem; color: var(--accent-gold); margin-bottom: 16px; font-family: 'Cinzel', serif; }
 
 .checkout-btn, .add-to-cart-btn { 
     width: 100%; padding: 16px; 
@@ -179,7 +237,7 @@ body {
     color: #15221B; 
     font-size: 1.1rem; font-weight: bold; 
     cursor: pointer; transition: background 0.3s; 
-    font-family: inherit;
+    font-family: 'Cormorant Garamond', serif;
 }
 .checkout-btn:hover, .add-to-cart-btn:hover { background: var(--accent-gold-hover); }
 .checkout-btn:disabled { background: var(--text-muted); cursor: not-allowed; }
@@ -187,9 +245,26 @@ body {
 /* Product Modal Specifics */
 .product-modal-content { padding: 24px; position: relative; }
 .product-modal-content .product-image { height: 200px; border-radius: 8px; margin-bottom: 20px; }
-.product-modal-content h2 { color: var(--accent-gold); font-size: 1.5rem; margin-bottom: 12px; font-weight: normal; }
-.product-modal-content .product-description { color: var(--text-main); font-size: 1rem; line-height: 1.6; margin-bottom: 20px; display: block; -webkit-line-clamp: unset; }
-.product-modal-content .product-price { font-size: 1.6rem; margin-bottom: 24px; }
+.product-modal-content h2 { 
+    font-family: 'Cinzel', serif;
+    color: var(--accent-gold); 
+    font-size: 1.5rem; 
+    margin-bottom: 12px; 
+    font-weight: 600; 
+}
+.product-modal-content .product-description { 
+    color: var(--text-main); 
+    font-size: 1.05rem; 
+    line-height: 1.6; 
+    margin-bottom: 20px; 
+    display: block; 
+    -webkit-line-clamp: unset; 
+}
+.product-modal-content .product-price { 
+    font-size: 1.6rem; 
+    margin-bottom: 24px; 
+    font-family: 'Cinzel', serif;
+}
 
 .close-btn { 
     position: absolute; top: 16px; right: 16px; 
