@@ -50,7 +50,6 @@ body {
        align-items: center; 
        gap: -2px; }
 
-/* Шрифт для "Дары Гекаты" - используем Cinzel как аналог CocoBiker */
 .title-main { 
     font-family: 'Cinzel', 'CocoBiker', 'Georgia', serif; 
     font-size: 2rem; 
@@ -60,7 +59,6 @@ body {
     text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
-/* Шрифт для "Мастерская магии" - используем Cormorant как аналог AnastasiaScript */
 .title-sub { 
     font-family: 'Cormorant Garamond', 'AnastasiaScript', 'Georgia', serif; 
     font-size: 1.1rem; 
@@ -68,8 +66,8 @@ body {
     font-style: italic;
     font-weight: 400;
     letter-spacing: 1px;
-    margin-top: 0;      /* ← добавьте эту строку */
-    line-height: 1;     /* ← и эту, чтобы строка была плотнее */
+    margin-top: 0;
+    line-height: 1;
 }
 
 /* Categories Navigation */
@@ -130,33 +128,32 @@ body {
 }
 .product-image { 
     width: 100%; 
-    height: 200px; /* Чуть увеличил высоту для фото */
+    height: 200px;
     background: #15221B; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
-    overflow: hidden; /* Обрезает всё, что вылезает за рамки */
+    overflow: hidden;
 }
 
-/* Стили для картинки в карточке товара */
 .card-img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Картинка заполняет блок, не искажаясь */
+    object-fit: cover;
     transition: transform 0.3s ease;
 }
 .product-card:hover .card-img {
-    transform: scale(1.05); /* Легкое увеличение при наведении */
+    transform: scale(1.05);
 }
 
-/* Стили для картинки в модальном окне (большое фото) */
 .modal-img {
     width: 100%;
     height: 250px;
-    object-fit: contain; /* Показывает фото целиком */
+    object-fit: contain;
     border-radius: 8px;
     margin-bottom: 20px;
 }
+
 .product-info { padding: 16px; }
 .product-name { 
     font-family: 'Cinzel', serif;
@@ -181,41 +178,18 @@ body {
     font-family: 'Cinzel', serif;
 }
 
-/* Cart Float Button */
-.cart-float { 
-    position: fixed; bottom: 24px; right: 24px; 
-    width: 56px; height: 56px; 
-    background: var(--accent-gold); 
-    border-radius: 50%; 
-    display: flex; align-items: center; justify-content: center; 
-    cursor: pointer; 
-    box-shadow: 0 4px 15px rgba(200, 169, 97, 0.4); 
-    z-index: 100; 
-    transition: transform 0.2s;
-}
-.cart-float:active { transform: scale(0.95); }
-.cart-icon { font-size: 1.5rem; color: #15221B; }
-.cart-count { 
-    position: absolute; top: -4px; right: -4px; 
-    background: #15221B; color: var(--accent-gold); 
-    width: 22px; height: 22px; 
-    border-radius: 50%; 
-    display: flex; align-items: center; justify-content: center; 
-    font-size: 0.8rem; font-weight: bold; border: 1px solid var(--accent-gold);
-}
-
-/* Modals */
-.cart-modal, .product-modal { 
+/* Modals — только для товара (корзина удалена) */
+.product-modal { 
     display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
     background: rgba(0, 0, 0, 0.85); 
     z-index: 1000; align-items: flex-end; justify-content: center; 
 }
 @media (min-width: 768px) {
-    .cart-modal, .product-modal { align-items: center; }
+    .product-modal { align-items: center; }
 }
-.cart-modal.active, .product-modal.active { display: flex; }
+.product-modal.active { display: flex; }
 
-.cart-content, .product-modal-content { 
+.product-modal-content { 
     background: var(--card-bg); 
     border-radius: 16px 16px 0 0; 
     width: 100%; max-width: 500px; 
@@ -223,54 +197,14 @@ body {
     display: flex; flex-direction: column;
     border: 1px solid var(--border-color);
     border-bottom: none;
+    padding: 24px;
+    position: relative;
+    overflow-y: auto;
 }
 @media (min-width: 768px) {
-    .cart-content, .product-modal-content { border-radius: 16px; border-bottom: 1px solid var(--border-color); }
+    .product-modal-content { border-radius: 16px; border-bottom: 1px solid var(--border-color); }
 }
 
-.cart-header { 
-    padding: 20px; 
-    display: flex; justify-content: space-between; align-items: center; 
-    border-bottom: 1px solid var(--border-color);
-}
-.cart-header h2 { 
-    font-family: 'Cinzel', serif;
-    color: var(--accent-gold); 
-    font-size: 1.3rem; 
-    font-weight: 600; 
-}
-
-.cart-items { padding: 16px; overflow-y: auto; flex: 1; }
-.cart-item { 
-    display: flex; justify-content: space-between; align-items: center; 
-    padding: 12px 0; border-bottom: 1px solid var(--border-color); 
-}
-.cart-item:last-child { border-bottom: none; }
-.cart-item-name { 
-    font-family: 'Cormorant Garamond', serif;
-    color: var(--text-main); 
-    font-size: 1.05rem; 
-    margin-bottom: 4px; 
-}
-.cart-item-price { color: var(--accent-gold); font-size: 0.95rem; }
-
-.cart-footer { padding: 20px; border-top: 1px solid var(--border-color); background: rgba(0,0,0,0.2); }
-.cart-total { display: flex; justify-content: space-between; font-size: 1.4rem; color: var(--accent-gold); margin-bottom: 16px; font-family: 'Cinzel', serif; }
-
-.checkout-btn, .add-to-cart-btn { 
-    width: 100%; padding: 16px; 
-    background: var(--accent-gold); 
-    border: none; border-radius: 8px; 
-    color: #15221B; 
-    font-size: 1.1rem; font-weight: bold; 
-    cursor: pointer; transition: background 0.3s; 
-    font-family: 'Cormorant Garamond', serif;
-}
-.checkout-btn:hover, .add-to-cart-btn:hover { background: var(--accent-gold-hover); }
-.checkout-btn:disabled { background: var(--text-muted); cursor: not-allowed; }
-
-/* Product Modal Specifics */
-.product-modal-content { padding: 24px; position: relative; }
 .product-modal-content .product-image { height: 200px; border-radius: 8px; margin-bottom: 20px; }
 .product-modal-content h2 { 
     font-family: 'Cinzel', serif;
@@ -291,6 +225,28 @@ body {
     font-size: 1.6rem; 
     margin-bottom: 24px; 
     font-family: 'Cinzel', serif;
+}
+
+/* Кнопка «Заказать у мастера» */
+.order-btn { 
+    width: 100%; 
+    padding: 16px; 
+    background: var(--accent-gold); 
+    border: none; 
+    border-radius: 8px; 
+    color: #15221B; 
+    font-size: 1.1rem; 
+    font-weight: bold; 
+    cursor: pointer; 
+    transition: background 0.3s; 
+    font-family: 'Cormorant Garamond', serif;
+    margin-top: 10px;
+}
+.order-btn:hover { 
+    background: var(--accent-gold-hover); 
+}
+.order-btn:active {
+    transform: scale(0.98);
 }
 
 .close-btn { 
