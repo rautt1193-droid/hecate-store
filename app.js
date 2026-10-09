@@ -67,6 +67,8 @@ function setupEventListeners() {
     });
     
     document.getElementById('closeProduct').addEventListener('click', () => document.getElementById('productModal').classList.remove('active'));
+    
+    // ПРИВЯЗЫВАЕМ КНОПКУ ЗАКАЗА К ФУНКЦИИ
     document.getElementById('orderBtn').addEventListener('click', orderProduct);
     
     document.getElementById('productModal').addEventListener('click', (e) => {
@@ -85,14 +87,11 @@ function openProductModal(id) {
     document.getElementById('productModal').classList.add('active');
 }
 
-// Главная функция — переход в чат с готовым сообщением
 function orderProduct() {
     if (!currentProduct) return;
     
-    // Формируем текст сообщения
     const message = `Здравствуйте! Хочу заказать: ${currentProduct.name} (${currentProduct.price.toLocaleString('ru-RU')} ₽)`;
     
-    // 1. Сохраняем заявку в Supabase (для вашей статистики)
     sb.from('orders').insert({
         user_id: window.WebApp?.initDataUnsafe?.user?.id || null,
         user_name: window.WebApp?.initDataUnsafe?.user?.first_name || 'Гость',
@@ -103,8 +102,7 @@ function orderProduct() {
         if (error) console.error('Не удалось сохранить заявку:', error);
     });
     
-    // 2. Открываем ваш личный чат в MAX с уже вписанным текстом
-    // (Я очистил ссылку от vk.ru/away, оставив чистый MAX-адрес для мгновенного открытия)
+    // ВАША ССЫЛКА
     const directLink = `https://max.ru/u/f9LHodD0cOJiy6bwhmhT6m3z_BX4WkY_zuRrJipuoLdQ3j_nYN-G9lmEIDs?text=${encodeURIComponent(message)}`;
     
     if (window.WebApp && window.WebApp.openLink) {
@@ -113,6 +111,5 @@ function orderProduct() {
         window.open(directLink, '_blank');
     }
     
-    // Закрываем модальное окно товара
     document.getElementById('productModal').classList.remove('active');
 }
