@@ -161,14 +161,14 @@ body {
     margin-bottom: 8px; 
     font-weight: 600; 
 }
-.product-description { 
-    font-size: 0.9rem; 
-    color: var(--text-muted); 
-    margin-bottom: 12px; 
-    display: -webkit-box; 
-    -webkit-line-clamp: 3; 
-    -webkit-box-orient: vertical; 
-    overflow: hidden; 
+.product-modal-content .product-description { 
+    color: var(--text-main); 
+    font-size: 1.05rem; 
+    line-height: 1.6; 
+    margin-bottom: 20px; 
+    display: block; 
+    white-space: pre-line;  /* ← ВАЖНО: сохраняет переносы строк */
+    overflow: visible;
 }
 .product-price { 
     font-size: 1.3rem; 
